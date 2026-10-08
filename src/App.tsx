@@ -127,7 +127,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 p-8 lg:p-10 overflow-y-auto max-h-screen">
+      <main className="flex-1 p-8 lg:p-10 h-auto">
         {currentTab === "overview" && (
           <OverviewView
             decisions={decisions}

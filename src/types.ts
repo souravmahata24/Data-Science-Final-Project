@@ -70,6 +70,24 @@ export interface CustomerSegment {
   recommendedAction: string;
 }
 
+export interface CustomerRecord {
+  id: string;
+  name: string;
+  city: string;
+  phoneMasked: string;
+  segment: "VIP Customers" | "Loyal Customers" | "At-Risk Customers" | "Discount Seekers" | "New Customers";
+  recencyDays: number;
+  lastPurchaseDate: string;
+  orderFrequency: number;
+  totalMonetary: number;
+  avgOrderValue: number;
+  discountSensitivityPct: number;
+  favoriteProduct: string;
+  favoriteCategory: string;
+  riskStatus: "High Risk" | "Medium Risk" | "Healthy" | "New";
+  customerAction: string;
+}
+
 export interface HealthCheckResult {
   totalRows: number;
   totalCols: number;

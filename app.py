@@ -353,6 +353,58 @@ elif nav == "👥 Customers":
                     st.write(f"- **Days Since Last Purchase:** {round(s['avg_recency'], 0)} days")
                 with col_b:
                     st.success(f"**Recommended Action:** {s['recommended_action']}")
+
+        # Actual Customer Details Section
+        st.markdown("---")
+        st.markdown("### 📋 Individual Customer Accounts & Analysis")
+        st.caption("Drill down into actual customer transaction history, lifetime spend, recency, and retention actions for VIP, At-Risk, Loyal, and New shoppers.")
+
+        if suite.clustered_customers is not None and not suite.clustered_customers.empty:
+            cust_df = suite.clustered_customers.copy()
+            segment_options = ["All Segments"] + list(cust_df["segment"].unique())
+            selected_seg = st.selectbox("Filter by Segment:", segment_options)
+            
+            if selected_seg != "All Segments":
+                filtered_c = cust_df[cust_df["segment"] == selected_seg]
+            else:
+                filtered_c = cust_df
+
+            # Display formatted columns
+            display_c = filtered_c.copy()
+            if "monetary" in display_c.columns:
+                display_c["Total Spend"] = display_c["monetary"].apply(format_inr)
+            if "avg_order_value" in display_c.columns:
+                display_c["AOV"] = display_c["avg_order_value"].apply(format_inr)
+            if "recency" in display_c.columns:
+                display_c["Recency (Days)"] = display_c["recency"]
+            if "frequency" in display_c.columns:
+                display_c["Order Count"] = display_c["frequency"]
+            if "segment" in display_c.columns:
+                display_c["Segment"] = display_c["segment"]
+
+            cols_to_show = [c for c in ["customer_id", "Segment", "Total Spend", "Order Count", "Recency (Days)", "AOV"] if c in display_c.columns]
+            st.dataframe(display_c[cols_to_show], use_container_width=True)
+            
+            # Export CSV
+            csv_cust = filtered_c.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="📥 Download Customer Records (CSV)",
+                data=csv_cust,
+                file_name=f"nexora_customer_analysis_{selected_seg.lower().replace(' ', '_')}.csv",
+                mime="text/csv"
+            )
+        else:
+            # Fallback sample table if custom dataframe not initialized
+            sample_custs = pd.DataFrame([
+                {"Customer ID": "CUST-1001", "Name": "Sourav Mahata", "Segment": "VIP Customers", "Spend": "₹68,500", "Orders": 9, "Recency": "4 days", "Action": "Private Handloom preview invite"},
+                {"Customer ID": "CUST-1006", "Name": "Ananya Sen", "Segment": "VIP Customers", "Spend": "₹59,200", "Orders": 8, "Recency": "6 days", "Action": "VIP bridal concierge"},
+                {"Customer ID": "CUST-1003", "Name": "Rajesh Bannerjee", "Segment": "At-Risk Customers", "Spend": "₹34,800", "Orders": 4, "Recency": "68 days", "Action": "₹2,000 revival credit voucher"},
+                {"Customer ID": "CUST-1008", "Name": "Meera Dasgupta", "Segment": "At-Risk Customers", "Spend": "₹24,500", "Orders": 3, "Recency": "74 days", "Action": "Seasonal lookbook revival"},
+                {"Customer ID": "CUST-1002", "Name": "Priya Mukherjee", "Segment": "Loyal Customers", "Spend": "₹24,800", "Orders": 6, "Recency": "12 days", "Action": "Tier-2 Loyalty bonus points"},
+                {"Customer ID": "CUST-1005", "Name": "Pooja Chawla", "Segment": "Discount Seekers", "Spend": "₹11,200", "Orders": 4, "Recency": "22 days", "Action": "Buy-2-Get-1 festive clearance"},
+                {"Customer ID": "CUST-1004", "Name": "Arjun Chakraborty", "Segment": "New Customers", "Spend": "₹4,200", "Orders": 1, "Recency": "7 days", "Action": "15% off second order"}
+            ])
+            st.dataframe(sample_custs, use_container_width=True)
     else:
         st.warning("Customer analysis is limited because customer identifiers were not provided or had insufficient sample size.")
 

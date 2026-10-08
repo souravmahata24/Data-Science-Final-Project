@@ -49,7 +49,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   ];
 
   return (
-    <aside className="w-72 bg-slate-900 text-slate-200 min-h-screen flex flex-col border-r border-slate-800 shrink-0">
+    <aside className="w-72 bg-slate-900 text-slate-200 sticky top-0 h-screen flex flex-col border-r border-slate-800 shrink-0">
       {/* Brand Header */}
       <div className="p-6 border-b border-slate-800">
         <div className="flex items-center gap-3">

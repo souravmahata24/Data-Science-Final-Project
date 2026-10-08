@@ -161,7 +161,7 @@ def train_and_compare_demand_models(feature_df, feature_cols, target_col="target
             Repository Files
           </div>
 
-          <div className="space-y-1 max-h-[500px] overflow-y-auto">
+          <div className="space-y-1 h-auto">
             {fileTree.map(file => {
               const isSelected = selectedFile === file.path;
               return (
@@ -213,7 +213,7 @@ def train_and_compare_demand_models(feature_df, feature_cols, target_col="target
           </div>
 
           {/* Code Viewer Body */}
-          <pre className="p-5 font-mono text-xs leading-relaxed overflow-x-auto text-emerald-300 max-h-[520px]">
+          <pre className="p-5 font-mono text-xs leading-relaxed overflow-x-auto text-emerald-300 h-auto">
             {currentSnippet}
           </pre>
         </div>
