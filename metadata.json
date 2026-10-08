@@ -1,0 +1,6 @@
+{
+  "name": "Nexora Retail",
+  "description": "Predict Smarter. Stock Better. Sell More. Machine Learning powered retail decision-support platform for demand forecasting, stockout risk mitigation, customer intelligence, and inventory optimization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
